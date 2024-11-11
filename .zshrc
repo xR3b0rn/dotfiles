@@ -1,10 +1,9 @@
-
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
 alias cssh='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
-source ~/.openai
+export OPENAI_API_KEY=$(cat ~/.openai)
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
