@@ -1,6 +1,7 @@
 #!/bin/bash
 
 pwn=$(dirname -- "${0}")
-echo ${pwn}
-ln -s $(cd . && pwd)/.zshrc ${HOME}/.
-ln -s $(cd . && pwd)/.tmux.conf ${HOME}/.
+ln -s $(cd . && pwd)/.zshrc ${HOME}
+ln -s $(cd . && pwd)/.tmux.conf ${HOME}
+mkdir -p ${HOME}/.task
+ln -s $(cd . && pwd)/.task/hooks ${HOME}/.task
