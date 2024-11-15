@@ -18,9 +18,12 @@ if len(tasks) == 1:
     total_seconds = int(delta.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
-    project = task["project"]
-    desc = task["description"]
-    text = f"#[bg=green]{project}: {desc} {hours:02}:{minutes:02}:{seconds:02}"
+    text = "#[bg=red]active task is not assigned to any project"
+    if task["project"] is not None:
+        project = task["project"]
+        desc = task["description"]
+        text = f"#[bg=green]{project}: {desc} {
+            hours:02}:{minutes:02}:{seconds:02}"
 elif len(tasks) > 1:
     text = "#[bg=red]more than one task active"
 
