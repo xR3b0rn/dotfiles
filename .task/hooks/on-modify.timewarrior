@@ -87,9 +87,6 @@ def main(old, new):
 
         subprocess.call(['timew', start_or_stop] + tags + [':yes'])
 
-        out = subprocess.check_output(['timew', 'export'] + tags)
-        state = json.loads(out.decode("utf-8", errors="replace"))
-        new["timew"] = state
     # Modifications to task other than start/stop
     elif 'start' in new and 'start' in old:
         old_tags = extract_tags_from(old)
@@ -104,11 +101,10 @@ def main(old, new):
 
         if old_annotation != new_annotation:
             subprocess.call(['timew', 'annotate', '@1', new_annotation])
-    return new
 
 
 if __name__ == "__main__":
     old = json.loads(input_stream.readline().decode("utf-8", errors="replace"))
     new = json.loads(input_stream.readline().decode("utf-8", errors="replace"))
-    new = main(old, new)
     print(json.dumps(new))
+    main(old, new)
