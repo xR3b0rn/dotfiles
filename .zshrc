@@ -5,6 +5,20 @@ alias cssh='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
 export OPENAI_API_KEY=$(cat ~/.openai)
 
+export PATH="\
+/usr/sbin:\
+/usr/bin:\
+/usr/local/sbin:\
+/usr/local/bin:\
+/sbin:\
+/bin:\
+/usr/games:\
+/usr/local/games:\
+/usr/lib/wsl/lib:\
+~/.local/bin:\
+~/.cargo/bin"
+export PATH=${PATH}:~/.cargo/bin
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
