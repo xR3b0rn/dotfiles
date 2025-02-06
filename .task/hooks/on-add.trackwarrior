@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+const readline = require('readline');
+const { Record } = require('./library/Record');
+const { settings, config } = require('./library/settings');
+
+const main = async () => {
+    let input = '';
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+   
+    for await (const line of rl) {
+        input += line.toString()
+    }
+    
+    const current = new Record(JSON.parse(input));
+    
+    if (config.getBool('create_time_when_add_task', settings.createTimeWhenAddTask)) {
+        current.setDuration('0');
+    }
+    
+    process.stdout.write(current.output());
+};
+
+main();
