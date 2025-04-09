@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+
+
+import os
+import sys
+import json
+import datetime
+import psutil
+
+
+try:
+    input_stream = sys.stdin.buffer
+except AttributeError:
+    input_stream = sys.stdin
+
+
+def append_annotation(task, comment):
+    now_iso = datetime.datetime.now().isoformat()
+    if "annotations" not in task:
+        task["annotations"] = []
+    task["annotations"].append({
+        "entry": now_iso,
+        "comment": comment
+    })
+    return task
+
+
+def get_parent_tty():
+    parent_pid = os.getppid()
+    try:
+        parent = psutil.Process(parent_pid)
+        tty = parent.terminal()
+        return tty
+    except:
+        return None
+
+
+def read_from_tty(tty, prompt):
+    try:
+        with open(tty, 'r') as tty:
+            print(prompt, file=sys.stderr)
+            user_input = tty.readline().strip()
+            return user_input
+    except:
+        exit(1)
+
+
+if __name__ == "__main__":
+    old = json.loads(input_stream.readline().decode("utf-8", errors="replace"))
+    new = json.loads(input_stream.readline().decode("utf-8", errors="replace"))
+    was_completed = old.get("status")
+    is_completed = new.get("status")
+
+    tty = get_parent_tty()
+    if tty is None:
+        exit(1)
+
+    if was_completed != "completed" and is_completed == "completed":
+        desc = new.get("description", "")
+        try:
+            print(f'Task done: "{desc}"', file=sys.stderr)
+            comment = read_from_tty(
+                tty, "Append comment (ENTER to skip): ").strip()
+            if comment:
+                new = append_annotation(new, comment)
+        except EOFError:
+            pass
+    print(json.dumps(new))
